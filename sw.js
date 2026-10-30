@@ -1,5 +1,5 @@
 /* Qaranda Industries Ltd: lightweight offline cache. Keep this file next to index.html. */
-var V="qaranda-v1",CORE=["./","./index.html"];
+var V="qaranda-v2",CORE=["./","./index.html"];
 var SKIP=/googletagmanager|google-analytics|doubleclick|googleadservices/;
 self.addEventListener("install",function(e){e.waitUntil(caches.open(V).then(function(c){return c.addAll(CORE)}).then(function(){return self.skipWaiting()}))});
 self.addEventListener("activate",function(e){e.waitUntil(caches.keys().then(function(k){return Promise.all(k.filter(function(n){return n!==V}).map(function(n){return caches.delete(n)}))}).then(function(){return self.clients.claim()}))});
