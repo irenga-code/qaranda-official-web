@@ -1,0 +1,43 @@
+QARANDA: REAL SECURITY HEADERS (set these on your web host)
+Browsers ignore X-Frame-Options, frame-ancestors, HSTS and X-Content-Type-Options when they are only in <meta> tags.
+index.html already has the meta versions plus a frame-busting script, but the HTTP headers below are what actually enforce them.
+
+--- Netlify / Cloudflare Pages: save as a file named _headers next to index.html ---
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: frame-ancestors 'none'
+
+--- Apache (.htaccess) ---
+<IfModule mod_headers.c>
+Header always set X-Frame-Options "DENY"
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+Header always set Content-Security-Policy "frame-ancestors 'none'"
+</IfModule>
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+--- nginx ---
+add_header X-Frame-Options "DENY" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()" always;
+add_header Content-Security-Policy "frame-ancestors 'none'" always;
+
+--- robots.txt (only polite crawlers obey it; real scraper blocking needs a firewall such as Cloudflare Bot Fight Mode) ---
+User-agent: *
+Allow: /
+User-agent: GPTBot
+Disallow: /
+User-agent: CCBot
+Disallow: /
+Sitemap: https://www.qaranda.com/sitemap.xml
