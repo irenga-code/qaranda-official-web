@@ -59,3 +59,6 @@ function boot(){loadThree().then(start,function(){})}
 if(host.offsetParent!==null||!("IntersectionObserver" in window)){boot()}else{var io=new IntersectionObserver(function(e){if(e[0].isIntersecting){io.disconnect();boot()}},{rootMargin:"200px"});io.observe(host)}
 });
 })();
+
+(function(){var hero=document.querySelector(".hero");if(!hero||!("IntersectionObserver" in window))return;
+new IntersectionObserver(function(e){hero.classList.toggle("off",!e[0].isIntersecting)}).observe(hero)})();
