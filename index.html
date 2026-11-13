@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pHELkUkRpG9CD1h/qLf0hXnp1enBIE0yPbqLkB6YEMI=' 'sha256-H/Vw+D4o0WI/PgkVCeZio4pj6QR28l3IFlsTTPu3944=' 'sha256-mQCIvoGPnMOztgJt4BODZg8InMITapVoJHEMisQeOUw=' 'sha256-Z0b9IbFEa+2HtUTQg+kP4SULPPacFXkzgIy6a0Klhzs=' 'sha256-EOBJFHoMZgmYUGixjDzjBXZ75ufVB2ZOaj2JAxi9nrc=' 'sha256-HE8SDpz7J6Ym9sgxQoCnr6+MGsmwX3pTo7BZ/LzOfVU=' 'sha256-jD2SZV0H6vu/fHYHvddSny9fzg06eES/mAu7QxdGWrY=' https://www.googletagmanager.com https://www.google-analytics.com https://googleads.g.doubleclick.net https://www.googleadservices.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https:; frame-src https://www.googletagmanager.com https://td.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js 'sha256-pHELkUkRpG9CD1h/qLf0hXnp1enBIE0yPbqLkB6YEMI=' 'sha256-H/Vw+D4o0WI/PgkVCeZio4pj6QR28l3IFlsTTPu3944=' 'sha256-mQCIvoGPnMOztgJt4BODZg8InMITapVoJHEMisQeOUw=' 'sha256-Z0b9IbFEa+2HtUTQg+kP4SULPPacFXkzgIy6a0Klhzs=' 'sha256-EOBJFHoMZgmYUGixjDzjBXZ75ufVB2ZOaj2JAxi9nrc=' 'sha256-HE8SDpz7J6Ym9sgxQoCnr6+MGsmwX3pTo7BZ/LzOfVU=' 'sha256-jD2SZV0H6vu/fHYHvddSny9fzg06eES/mAu7QxdGWrY=' https://www.googletagmanager.com https://www.google-analytics.com https://googleads.g.doubleclick.net https://www.googleadservices.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https:; frame-src https://www.googletagmanager.com https://td.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <!-- Browsers only honour the next two when sent as real HTTP headers (see security-headers.txt); they are here as requested, and the frame-busting script below covers clickjacking. -->
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
@@ -106,7 +106,16 @@ header .wrap.bar{max-width:none;padding-left:20px;padding-right:28px}
 .btn.solid:hover{background:var(--white);border-color:var(--white)}
 .btn.dark{border-color:var(--black);color:var(--black)}
 .btn.dark:hover{background:var(--black);color:var(--white)}
-.hero{padding:88px 0}
+.hero{padding:88px 0;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:clamp(24px,4vw,64px)}
+.earth{display:flex;justify-content:center;align-items:center}
+.globe{position:relative;isolation:isolate;width:clamp(290px,42vw,540px);aspect-ratio:1;border-radius:50%;background:#000;box-shadow:-12px 0 70px rgba(90,150,255,.22)}
+.globe::before{content:"";position:absolute;inset:-14%;z-index:-2;border-radius:50%;background:radial-gradient(circle,#000 58%,#00030f 72%,rgba(0,15,53,0) 100%)}
+.globe img{width:100%;height:100%;object-fit:cover;transform:scale(1.1);display:block;border-radius:50%}
+.globe::after{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(90deg,rgba(0,0,0,0) 34%,rgba(0,0,6,.5) 50%,rgba(0,0,4,.92) 70%,#000 88%)}
+.globe.live{background:none;box-shadow:none}.globe.live img,.globe.live::after{display:none}
+.lite .earth{display:none}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}.globe{width:min(72vw,300px)}.earth{margin-top:8px}}
 .hero h1{font-size:clamp(1.8rem,4.4vw,3.6rem);max-width:17em}
 .hero p{max-width:36em;color:var(--mute);margin:26px 0 34px;font-size:clamp(1rem,1.6vw,1.2rem)}
 .cta{display:flex;flex-wrap:wrap;gap:14px}
@@ -253,9 +262,12 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
 <p class="cnote" data-i18n="hw.note">Prices, stock and exact configurations (processor, memory, storage) are confirmed with your quote.</p>
 </div></section>
 <div class="hero"><div class="wrap">
+<div class="htext">
 <h1 class="wide" data-i18n="hero.h1">Software, IT services and hardware, built to run your business</h1>
 <p data-i18n="hero.p"><span class="qw"><span class="q">Q</span>aranda</span> builds enterprise web applications and corporate websites, integrates your systems, and supplies the laptops, computers and network hardware your team depends on.</p>
 <div class="cta"><a class="btn solid" href="https://wa.me/256789175095?text=Hello%20Qaranda%2C%20I%20would%20like%20to%20start%20a%20project." data-wa="start" data-inquiry="technology" target="_blank" rel="noopener" data-i18n="btn.start">Start a project</a><a class="btn" href="#it" data-i18n="btn.browse">Our services</a></div>
+</div>
+<div class="earth" aria-hidden="true"><div class="globe" data-day="assets/earth-day.webp" data-night="assets/earth-night.webp"><img decoding="async" src="assets/earth.webp" width="540" height="540" alt=""></div></div>
 </div></div>
 <section id="it"><div class="wrap">
 <h2 class="wide" data-i18n="svc.h2">IT services and operations</h2>
@@ -432,5 +444,6 @@ else{var q=JSON.parse(localStorage.getItem("qa-queue")||"[]");q.push(rec);localS
 })();
 </script>
 <script>(function(){var h=document.querySelector("header");if(!h)return;function f(){document.documentElement.style.setProperty("--hh",h.offsetHeight+"px")}f();window.addEventListener("resize",f);window.addEventListener("load",f);if(window.ResizeObserver)new ResizeObserver(f).observe(h)})()</script>
+<script src="assets/globe.js" defer></script>
 </body>
 </html>
